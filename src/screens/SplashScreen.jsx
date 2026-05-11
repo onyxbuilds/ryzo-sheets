@@ -23,7 +23,7 @@ export default function SplashScreen({ onDone }) {
 
                                                                                 <div className="text-center">
                                                                                           <h1 className="text-4xl font-bold text-white tracking-tight">
-                                                                                                      Onyx
+                                                                                                      Ryzo
                                                                                                                 </h1>
                                                                                                                           <p className="text-indigo-400 text-base mt-1 tracking-widest uppercase text-xs font-semibold">
                                                                                                                                       Sheets

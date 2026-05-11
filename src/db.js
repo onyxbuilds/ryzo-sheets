@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 
-export const db = new Dexie('onyxsheets')
+export const db = new Dexie('ryzosheets')
 
 // Request persistent storage — prevents browser from silently evicting data
 if (navigator.storage?.persist) {

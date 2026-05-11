@@ -16,7 +16,7 @@ import { syncToCloud } from '../sync'
 import { getLimitMessage } from '../utils/limits'
 import { supabase } from '../supabase'
 
-// ── Onyx design tokens — exact match to landing page
+// ── Ryzo design tokens — exact match to landing page
 const D = {
   black:        '#080809',
   surface:      '#0f0f11',

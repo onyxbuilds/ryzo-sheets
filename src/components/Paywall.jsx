@@ -3,7 +3,7 @@
 import BottomSheet from './BottomSheet'
 
 const LEMON_SQUEEZY_VARIANT_ID = '1493768'
-const LEMON_SQUEEZY_STORE = 'onyxbuilds'
+const LEMON_SQUEEZY_STORE = 'ryzobuilds'
 
 export default function Paywall({ message, onClose, onUpgrade, userEmail }) {
 

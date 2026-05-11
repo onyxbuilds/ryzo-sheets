@@ -9,7 +9,7 @@ const ThemeContext = createContext()
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(() => {
     // Check localStorage first
-    const saved = localStorage.getItem('onyx-theme')
+    const saved = localStorage.getItem('ryzo-theme')
     if (saved) return saved === 'dark'
     // Default to system preference
     return window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -17,7 +17,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     // Save preference
-    localStorage.setItem('onyx-theme', isDark ? 'dark' : 'light')
+    localStorage.setItem('ryzo-theme', isDark ? 'dark' : 'light')
 
     // Apply to document root for Tailwind dark mode
     if (isDark) {

@@ -60,7 +60,7 @@ export default function UpgradeScreen({ onBack }) {
         body: JSON.stringify({
           email: email.trim(),
           plan: selectedPlan,
-          source: 'Onyx Sheets App',
+          source: 'Ryzo Sheets App',
           timestamp: new Date().toISOString()
         })
       })
@@ -93,7 +93,7 @@ export default function UpgradeScreen({ onBack }) {
         {/* Hero */}
         <div className="text-center space-y-2">
           <div className="text-6xl">⬡</div>
-          <h2 className="text-2xl font-bold">Onyx Pro</h2>
+          <h2 className="text-2xl font-bold">Ryzo Pro</h2>
           <p className={`${subtext} text-sm`}>
             Everything you need to work faster on mobile
           </p>

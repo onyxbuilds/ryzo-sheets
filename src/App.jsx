@@ -28,10 +28,10 @@ export default function App() {
 
   // First launch detection + set initial history state
   useEffect(() => {
-    const launched = localStorage.getItem('onyx-launched')
+    const launched = localStorage.getItem('ryzo-launched')
     if (!launched) {
       setIsFirstLaunch(true)
-      localStorage.setItem('onyx-launched', 'true')
+      localStorage.setItem('ryzo-launched', 'true')
     }
     window.history.replaceState({ screen: SCREENS.HOME }, '')
   }, [])
@@ -56,7 +56,7 @@ export default function App() {
       if (isFirstLaunch) {
         setScreen(SCREENS.ONBOARDING)
       } else if (user) {
-        const lastSheet = localStorage.getItem('onyx-last-sheet')
+        const lastSheet = localStorage.getItem('ryzo-last-sheet')
         if (lastSheet) {
           try {
             const parsed = JSON.parse(lastSheet)
@@ -64,7 +64,7 @@ export default function App() {
             setScreen(SCREENS.GRID)
             window.history.replaceState({ screen: SCREENS.GRID }, '')
           } catch (e) {
-            localStorage.removeItem('onyx-last-sheet')
+            localStorage.removeItem('ryzo-last-sheet')
             setScreen(SCREENS.HOME)
             window.history.replaceState({ screen: SCREENS.HOME }, '')
           }
@@ -84,7 +84,7 @@ export default function App() {
       if (screen === SCREENS.GRID) {
         setCurrentSheet(null)
         setScreen(SCREENS.HOME)
-        localStorage.removeItem('onyx-last-sheet')
+        localStorage.removeItem('ryzo-last-sheet')
         window.history.replaceState({ screen: SCREENS.HOME }, '')
       } else if (screen === SCREENS.UPGRADE) {
         if (currentSheet) {
@@ -105,7 +105,7 @@ export default function App() {
     if (isFirstLaunch) {
       setScreen(SCREENS.ONBOARDING)
     } else if (user) {
-      const lastSheet = localStorage.getItem('onyx-last-sheet')
+      const lastSheet = localStorage.getItem('ryzo-last-sheet')
       if (lastSheet) {
         try {
           const parsed = JSON.parse(lastSheet)
@@ -113,7 +113,7 @@ export default function App() {
           setScreen(SCREENS.GRID)
           window.history.replaceState({ screen: SCREENS.GRID }, '')
         } catch (e) {
-          localStorage.removeItem('onyx-last-sheet')
+          localStorage.removeItem('ryzo-last-sheet')
           setScreen(SCREENS.HOME)
           window.history.replaceState({ screen: SCREENS.HOME }, '')
         }
@@ -133,14 +133,14 @@ export default function App() {
   function handleOpenSheet(sheet) {
     setCurrentSheet(sheet)
     setScreen(SCREENS.GRID)
-    localStorage.setItem('onyx-last-sheet', JSON.stringify(sheet))
+    localStorage.setItem('ryzo-last-sheet', JSON.stringify(sheet))
     window.history.pushState({ screen: SCREENS.GRID }, '')
   }
 
   function handleBackToHome() {
     setCurrentSheet(null)
     setScreen(SCREENS.HOME)
-    localStorage.removeItem('onyx-last-sheet')
+    localStorage.removeItem('ryzo-last-sheet')
     window.history.replaceState({ screen: SCREENS.HOME }, '')
   }
 

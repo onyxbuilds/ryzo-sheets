@@ -1,4 +1,4 @@
-// Onyx design tokens — matches landing page exactly
+// Ryzo design tokens — matches landing page exactly
 export const ONYX = {
   // Backgrounds
     black:        '#080809',

@@ -4,7 +4,7 @@ export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://onyx-sheets.vercel.app'
+      redirectTo: 'https://ryzo-sheets.vercel.app'
     }
   })
   if (error) console.error('Sign in error:', error)

@@ -17,7 +17,7 @@ export default function SignInScreen() {
           <div className="w-20 h-20 bg-indigo-600 rounded-3xl flex items-center justify-center text-4xl shadow-2xl shadow-indigo-900">
             ◈
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Onyx Sheets</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Ryzo Sheets</h1>
           <p className={`${subtext} text-center text-sm`}>
             A powerful mobile spreadsheet.{'\n'}Your data synced and safe.
           </p>

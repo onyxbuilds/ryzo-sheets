@@ -227,7 +227,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
         body: JSON.stringify({
           message: feedbackText,
           email: user?.email || 'anonymous',
-          _subject: 'Onyx Sheets Feedback'
+          _subject: 'Ryzo Sheets Feedback'
         })
       })
     } catch (e) { console.error('Feedback error:', e) }
@@ -236,9 +236,9 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
   }
 
   async function handleReferFriend() {
-    const message = `Hey! I've been using Onyx Sheets — a mobile spreadsheet that actually works great on phones. Check it out: https://onyx-sheets.vercel.app`
+    const message = `Hey! I've been using Ryzo Sheets — a mobile spreadsheet that actually works great on phones. Check it out: https://ryzo-sheets.vercel.app`
     if (navigator.share) {
-      try { await navigator.share({ title: 'Onyx Sheets', text: message }) }
+      try { await navigator.share({ title: 'Ryzo Sheets', text: message }) }
       catch (e) { if (e.name !== 'AbortError') console.error(e) }
     } else {
       navigator.clipboard?.writeText(message)
@@ -317,7 +317,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
           {/* Logo */}
           <div>
             <div style={{ fontSize: '1.05rem', fontWeight: 600, letterSpacing: '-0.02em', color: textPri }}>
-              ◈ Onyx Sheets
+              ◈ Ryzo Sheets
             </div>
             {user && (
               <div style={{ fontSize: '0.68rem', color: textSec, marginTop: '1px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

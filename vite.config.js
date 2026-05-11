@@ -14,8 +14,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Onyx Sheets',
-        short_name: 'Onyx',
+        name: 'Ryzo Sheets',
+        short_name: 'Ryzo',
         description: 'The mobile-first spreadsheet built for touch',
         theme_color: '#4f46e5',
         background_color: '#030712',
