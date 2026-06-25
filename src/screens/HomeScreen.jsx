@@ -84,15 +84,23 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
 
   async function initData() {
     setLoading(true)
-    await cleanupExpiredBinSheets()
-    if (user) {
-      setSyncing(true)
-      const pulled = await syncFromCloud(user.id, db)
-      setSyncing(false)
-      if (pulled) { await loadSheets(); setLoading(false); return }
+    try {
+      await cleanupExpiredBinSheets()
+      if (user) {
+        setSyncing(true)
+        try {
+          const pulled = await syncFromCloud(user.id, db)
+          if (pulled) { await loadSheets(); return }
+        } finally {
+          setSyncing(false)
+        }
+      }
+      await loadSheets()
+    } catch (e) {
+      console.error('initData failed:', e)
+    } finally {
+      setLoading(false)
     }
-    await loadSheets()
-    setLoading(false)
   }
 
   async function loadSheets() {

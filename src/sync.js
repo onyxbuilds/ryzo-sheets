@@ -9,7 +9,8 @@ function intToUUID(id) {
 // Convert UUID back to integer for Dexie
 function uuidToInt(uuid) {
   if (!uuid) return Date.now()
-  const hex = uuid.split('-').pop()
+  // Use 13 hex chars (52 bits) — max safe integer range, lower collision risk than 12
+  const hex = uuid.replace(/-/g, '').slice(-13)
   return parseInt(hex, 16) || Date.now()
 }
 
@@ -44,7 +45,7 @@ export async function syncToCloud(userId, db) {
         position: col.position
       }))
       const { error: colsError } = await supabase.from('columns').upsert(columnRows)
-      if (colsError) console.error('Columns sync error:', colsError)
+      if (colsError) { console.error('Columns sync error:', colsError); return }
     }
 
     // Batch upsert all rows at once
@@ -56,7 +57,7 @@ export async function syncToCloud(userId, db) {
         created_at: row.createdAt
       }))
       const { error: rowsError } = await supabase.from('rows').upsert(rowRows)
-      if (rowsError) console.error('Rows sync error:', rowsError)
+      if (rowsError) { console.error('Rows sync error:', rowsError); return }
     }
 
     // Batch upsert all cells at once
