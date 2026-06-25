@@ -456,7 +456,6 @@ export default function GridScreen({ sheet, onBack, onUpgrade, user, isPro }) {
         <Paywall
           message={getLimitMessage(paywall)}
           onClose={() => setPaywall(null)}
-          onUpgrade={() => { setPaywall(null); onUpgrade() }}
           userEmail={user?.email}
           userId={user?.id}
         />

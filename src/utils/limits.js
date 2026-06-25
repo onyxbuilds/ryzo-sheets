@@ -31,7 +31,7 @@ export function hasReachedRowLimit(rowCount, isPro) {
 // Check if a pro feature is accessible
 export function canAccessFeature(feature, isPro) {
   if (isPro) return true
-  return !PRO_FEATURES[feature]
+  return !(PRO_FEATURES[feature] ?? true)
 }
 
 // Get a friendly message when limit is hit

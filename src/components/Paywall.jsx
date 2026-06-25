@@ -1,16 +1,11 @@
-// PAYWALL — Opens Lemon Squeezy checkout when user hits free tier limit
+// PAYWALL — Shown when user hits free tier limit
 
 import BottomSheet from './BottomSheet'
 
-const LEMON_SQUEEZY_VARIANT_ID = '1493768'
-const LEMON_SQUEEZY_STORE = 'ryzobuilds'
-
-export default function Paywall({ message, onClose, onUpgrade, userEmail }) {
+export default function Paywall({ message, onClose, userEmail }) {
 
   function handleUpgrade() {
-    const checkoutUrl = `https://${LEMON_SQUEEZY_STORE}.lemonsqueezy.com/buy/${LEMON_SQUEEZY_VARIANT_ID}${userEmail ? `?checkout[email]=${encodeURIComponent(userEmail)}` : ''}`
-    window.open(checkoutUrl, '_blank')
-    onClose()
+    // TODO: wire Razorpay
   }
 
   return (
@@ -46,10 +41,10 @@ export default function Paywall({ message, onClose, onUpgrade, userEmail }) {
         </div>
 
         <button
-          onPointerDown={handleUpgrade}
-          className="w-full bg-indigo-600 text-white font-bold py-4 rounded-xl text-base active:bg-indigo-700"
+          disabled
+          className="w-full bg-indigo-400 text-white font-bold py-4 rounded-xl text-base opacity-50 cursor-not-allowed"
         >
-          Start Free Trial →
+          Upgrade coming soon
         </button>
 
         <button
