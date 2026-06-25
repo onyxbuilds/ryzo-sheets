@@ -94,7 +94,7 @@ export async function syncFromCloud(userId, db) {
     if (error) { console.error('Sync error:', error); return false }
     if (!sheets?.length) {
       const localSheets = await db.sheets.toArray()
-      if (localSheets.length > 0) return false
+      if (localSheets.length > 0) await syncToCloud(userId, db)
       return false
     }
 
@@ -102,12 +102,17 @@ export async function syncFromCloud(userId, db) {
 
     // Fetch all data in parallel — one call per table, not per sheet
     const [
-      { data: columns },
-      { data: rows }
+      { data: columns, error: colsError },
+      { data: rows, error: rowsError }
     ] = await Promise.all([
       supabase.from('columns').select('*').in('sheet_id', sheetIds),
       supabase.from('rows').select('*').in('sheet_id', sheetIds)
     ])
+
+    if (colsError || rowsError) {
+      console.error('Sync error fetching data:', colsError || rowsError)
+      return false
+    }
 
     const rowIds = (rows || []).map(r => r.id)
 
@@ -120,47 +125,48 @@ export async function syncFromCloud(userId, db) {
       if (data) cells = cells.concat(data)
     }
 
-    // Clear and repopulate locally
-    await db.sheets.clear()
-    await db.columns.clear()
-    await db.rows.clear()
-    await db.cells.clear()
+    await db.transaction('rw', [db.sheets, db.columns, db.rows, db.cells], async () => {
+      await db.sheets.clear()
+      await db.columns.clear()
+      await db.rows.clear()
+      await db.cells.clear()
 
-    await db.sheets.bulkAdd(sheets.map(s => ({
-      id: uuidToInt(s.id),
-      name: s.name,
-      createdAt: s.created_at,
-      updatedAt: s.updated_at,
-      status: s.status || 'active',
-      deletedAt: s.deleted_at || null
-    })))
-
-    if (columns?.length) {
-      await db.columns.bulkAdd(columns.map(c => ({
-        id: uuidToInt(c.id),
-        sheetId: uuidToInt(c.sheet_id),
-        name: c.name,
-        type: c.type,
-        position: c.position
+      await db.sheets.bulkAdd(sheets.map(s => ({
+        id: uuidToInt(s.id),
+        name: s.name,
+        createdAt: s.created_at,
+        updatedAt: s.updated_at,
+        status: s.status || 'active',
+        deletedAt: s.deleted_at || null
       })))
-    }
 
-    if (rows?.length) {
-      await db.rows.bulkAdd(rows.map(r => ({
-        id: uuidToInt(r.id),
-        sheetId: uuidToInt(r.sheet_id),
-        createdAt: r.created_at
-      })))
-    }
+      if (columns?.length) {
+        await db.columns.bulkAdd(columns.map(c => ({
+          id: uuidToInt(c.id),
+          sheetId: uuidToInt(c.sheet_id),
+          name: c.name,
+          type: c.type,
+          position: c.position
+        })))
+      }
 
-    if (cells.length) {
-      await db.cells.bulkAdd(cells.map(c => ({
-        id: uuidToInt(c.id),
-        rowId: uuidToInt(c.row_id),
-        columnId: uuidToInt(c.column_id),
-        value: c.value
-      })))
-    }
+      if (rows?.length) {
+        await db.rows.bulkAdd(rows.map(r => ({
+          id: uuidToInt(r.id),
+          sheetId: uuidToInt(r.sheet_id),
+          createdAt: r.created_at
+        })))
+      }
+
+      if (cells.length) {
+        await db.cells.bulkAdd(cells.map(c => ({
+          id: uuidToInt(c.id),
+          rowId: uuidToInt(c.row_id),
+          columnId: uuidToInt(c.column_id),
+          value: c.value
+        })))
+      }
+    })
 
     return true
   } catch (e) {

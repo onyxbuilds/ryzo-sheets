@@ -137,7 +137,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
       for (let i = 0; i < validColumns.length; i++) {
         await createColumn(sheetId, validColumns[i].name, validColumns[i].type, i)
       }
-      if (user) syncToCloud(user.id, db)
+      if (user) await syncToCloud(user.id, db)
       await loadSheets()
       setNewSheetName('')
       setColumns([{ id: 1, name: 'Item', type: 'text' }])
@@ -159,7 +159,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
         setSheets(prev => prev.filter(s => s.id !== sheetId))
         try {
           await softDeleteSheet(sheetId)
-          if (user) syncToCloud(user.id, db)
+          if (user) await syncToCloud(user.id, db)
           await loadSheets()
         } catch (e) { await loadSheets() }
         finally { setDeleting(false) }
@@ -173,7 +173,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
     setDeleting(true)
     try {
       await restoreSheet(sheetId)
-      if (user) syncToCloud(user.id, db)
+      if (user) await syncToCloud(user.id, db)
       await loadSheets()
     } catch (e) { await loadSheets() }
     finally { setDeleting(false) }
@@ -189,7 +189,7 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
         setBinSheets(prev => prev.filter(s => s.id !== sheetId))
         try {
           await permanentlyDeleteSheet(sheetId)
-          if (user) syncToCloud(user.id, db)
+          if (user) await syncToCloud(user.id, db)
           await loadSheets()
         } catch (e) { await loadSheets() }
         finally { setDeleting(false) }
@@ -199,16 +199,8 @@ export default function HomeScreen({ user, onOpenSheet, onUpgrade, isPro }) {
   }
 
   async function handleManualSync() {
-    if (!user) return
+    if (!user || syncing) return
     setSyncing(true)
-    const localSheets = await getSheets()
-    const { data: cloudSheets } = await supabase
-      .from('sheets').select('id').eq('user_id', user.id)
-    if (localSheets.length > 0 && (!cloudSheets || cloudSheets.length === 0)) {
-      await syncToCloud(user.id, db)
-      setSyncing(false)
-      return
-    }
     await syncToCloud(user.id, db)
     setSyncing(false)
   }
